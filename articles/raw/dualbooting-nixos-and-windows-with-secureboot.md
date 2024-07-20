@@ -13,7 +13,7 @@ description: A guide on how to dual boot NixOS and Windows with secure boot
 > for any corrections create an issue on the github repo of this page
 
 ## My Current Setup (AKA your end result)
-I am currently running Windows 11 and NixOS 24.05 on the same laptop on the same NVME drive. I am using `systemd-boot` as my bootloader to easily switch between my Windows and NixOS installations. [Secure Boot](https://en.wikipedia.org/wiki/UEFI#Secure_Boot) was enabled using [lanzaboote](https://github.com/nix-community/lanzaboote).
+I am currently running Windows 11 and NixOS 24.11 on the same laptop on the same NVME drive. I am using `systemd-boot` as my bootloader to easily switch between my Windows and NixOS installations. [Secure Boot](https://en.wikipedia.org/wiki/UEFI#Secure_Boot) was enabled using [lanzaboote](https://github.com/nix-community/lanzaboote).
 
 ## Preface (Do Not Skip This)
 You will need to wipe your disk so first of all **backup you data**.
@@ -109,7 +109,7 @@ If you followed all the instructions properly you should have a system that can 
 
 [https://wiki.nixos.org](https://wiki.nixos.org) provides some general tips for NixOS and Windows dual booters [here](https://wiki.nixos.org/wiki/Dual_Booting_NixOS_and_Windows). It also talks about things like how to make the bootloader detect Windows (In our case Windows would be automatically detected), how to use grub instead of systemd-boot as the bootloader and about dual booting using different drive configurations.
 
-Refer to the **System Time** section from https://wiki.nixos.org to make sure that time on Windows remains in sync when dualbooting.
+Refer to the **System Time** section from [https://wiki.nixos.org](https://wiki.nixos.org) to make sure that time on Windows remains in sync when dualbooting.
 
 [https://wiki.nixos.org/wiki/Dual_Booting_NixOS_and_Windows#System_time](https://wiki.nixos.org/wiki/Dual_Booting_NixOS_and_Windows#System_time)
 
@@ -118,5 +118,5 @@ Refer to the **System Time** section from https://wiki.nixos.org to make sure th
 Here are some general tips for using your dual bootable system
 
 - To clear NixOS generations from the systemd-boot screen you need to run the `nix-collect-garbage` command and then also rebuild the system.
-- systemd-boot has some keyboard shortcuts to set an entry as the default entry, set the time to auto select the default entry etc. You can fing that [here](https://systemd.io/BOOT/)
+- systemd-boot has some keyboard shortcuts to set an entry as the default entry, set the time to auto select the default entry etc. You can find that [here](https://systemd.io/BOOT/).
 - If you want to switch from Windows to NixOS while in Windows instead of powering off and the starting the system select reboot from Windows. In Windows powering off and then on again is not the same as a reboot [Shutting Down Doesn't Fully Shut Down Windows 10](https://www.howtogeek.com/349114/shutting-down-doesnt-fully-shut-down-windows-10-but-restarting-it-does/). Although there is no actual proof that restarting is better to switch from Windows to another OS I still recommend restarting to switch to a different OS.

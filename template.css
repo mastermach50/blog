@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 
+:root {
+    --link-blue: rgb(95, 95, 227);
+}
+
 html {
     background-color: rgb(30, 30, 30);
     color: rgb(200, 200, 200);
@@ -8,12 +12,29 @@ html {
 }
 
 body {
-    max-width: 50rem;
-    margin: auto;
+    margin: 0;
 }
 
-body>h1 {
+.main-content {
+    max-width: 50rem;
+    margin: auto;
+    min-height: 100vh;
+}
+
+/* To make sure header weight does not change on hover */
+.sitename a:hover {
+    font-weight: 700;
+}
+
+body > h1 {
     font-size: 3rem;
+}
+
+footer {
+    background-color: black;
+    padding: 0 2rem;
+    height: 3rem;
+    line-height: 3rem;
 }
 
 blockquote {
@@ -27,13 +48,25 @@ h1,h2,h3,h4,h5,h6 {
 
 a {
     text-decoration: none;
-    color: rgb(95, 95, 227);
+    color: var(--link-blue);
     display: inline-block;
 }
 
 a:hover {
-    transform: rotate(2deg);
     transform: 0.5s;
-    font-weight: 700;
-    color: rgb(36, 36, 255);
+    font-weight: 500;
+    color:white;
+    background-color: var(--link-blue);
+    transition: ease-in-out;
+}
+
+strong {
+    color: white;
+}
+
+code {
+    color: white;
+    padding: 0.2rem;
+    background-color: rgb(73, 73, 73);
+    border-radius: 0.3rem;
 }

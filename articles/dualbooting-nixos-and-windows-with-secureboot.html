@@ -12,218 +12,236 @@ boot">
     </head>
     <body>
 
-        <h1>Dual Booting NixOS and Windows (with SecureBoot)</h1>
+        <div class="main-content">
 
-        <p>
-        <i>Date:</i> <b>21st July 2024</b> <br>
-        <i>Author:</i> <b>MasterMach50</b>
-        </p>
-
-        <blockquote>
-        <p>Please do not “follow” this guide. Read the entirety of it
-        and then make your own informed decisions.</p>
-        </blockquote>
-        <blockquote>
-        <p>I am not sponsored by anyone, I am writing this on my own
-        accord and the links here were chosen without any bias. I am not
-        liable for any damages.</p>
-        </blockquote>
-        <blockquote>
-        <p>for any corrections create an issue on the github repo of
-        this page</p>
-        </blockquote>
-        <h2 id="my-current-setup-aka-your-end-result">My Current Setup
-        (AKA your end result)</h2>
-        <p>I am currently running Windows 11 and NixOS 24.05 on the same
-        laptop on the same NVME drive. I am using
-        <code>systemd-boot</code> as my bootloader to easily switch
-        between my Windows and NixOS installations. <a
-        href="https://en.wikipedia.org/wiki/UEFI#Secure_Boot">Secure
-        Boot</a> was enabled using <a
-        href="https://github.com/nix-community/lanzaboote">lanzaboote</a>.</p>
-        <h2 id="preface-do-not-skip-this">Preface (Do Not Skip
-        This)</h2>
-        <p>You will need to wipe your disk so first of all
-        <strong>backup you data</strong>.</p>
-        <blockquote>
-        <p>ALWAYS BACKUP YOUR DATA</p>
-        </blockquote>
-        <p>For dual booting, the Windows install instructions is a bit
-        different so do read through it.</p>
-        <p>First you will be installing Windows and then NixOS. Since
-        NixOS does not support secureboot out of the box yet you will
-        have to make it work by installing <a
-        href="https://github.com/nix-community/lanzaboote">lanzaboote</a>.</p>
-        <h3 id="some-general-tips">Some General Tips</h3>
-        <ul>
-        <li><a href="https://nixos.wiki">https://nixos.wiki</a> may or
-        may not be up to date so do not blindly depend on it.</li>
-        <li><a href="https://wiki.nixos.org">https://wiki.nixos.org</a>
-        is almost always up to date.</li>
-        <li>Having full disk encryption (bitlocker on Windows) is good,
-        but if things go wrong it will be harder to recover your data.
-        It’s still possibe to recover your data but a bit harder. Still,
-        use bitlocker if you have to.</li>
-        </ul>
-        <h2 id="windows-installation">Windows Installation</h2>
-        <h3 id="preparing-the-iso">Preparing the ISO</h3>
-        <p>A regular Windows ISO will do.</p>
-        <p>To flash the ISO to a USB drive I used <a
-        href="https://rufus.ie">Rufus</a> form another Windows machine.
-        If you are using rufus then before flashing the iso to a usb
-        drive rufus will give you the option to disable bitlocker
-        encryption, i recommend enabling this. If you did not get this
-        option then continue as bitlocker can be disabled after
-        installing Windows. (Refer <strong>After Installing
-        Windows</strong> section)</p>
-        <blockquote>
-        <p>You can enable bitlocker from Windows after installing both
-        Windows and NixOS and installing lanzaboote.</p>
-        </blockquote>
-        <blockquote>
-        <p><strong>Disabling bitlocker is important</strong> for the
-        install process beacuse bitlocker depends on secureboot and we
-        need to disable secureboot for installing NixOS. If secure boot
-        is disabled and you have enabled bitlocker you won’t be able to
-        simply boot into Windows, you will have to get your bitlocker
-        decryption key.</p>
-        </blockquote>
-        <h3 id="installing-windows">Installing Windows</h3>
-        <p>During Windows installation select
-        <code>Custom: Install Windows Only (advanced)</code>. You will
-        be asked select which drive to install to and to setup the
-        partitions. You will need to setup a large EFI partition (500MB
-        to 1GB) for dualbooting as the default EFI partition size on
-        Windows is just 100MB which is too small for sual booting. You
-        can do this by following this guide.</p>
-        <p><a
-        href="https://www.ctrl.blog/entry/how-to-esp-windows-setup.html">https://www.ctrl.blog/entry/how-to-esp-windows-setup.html</a></p>
-        <blockquote>
-        <p>If you are ever planning to dual boot anything with Windows
-        please consider creating a larger EFI partition than what
-        Windows defaults to during Windows install.</p>
-        </blockquote>
-        <blockquote>
-        <p>I have gone with a 1GB EFI partition on my system</p>
-        </blockquote>
-        <h3 id="after-installing-windows">After Installing Windows</h3>
-        <p>If you have not disabled bitlocker from rufus or used another
-        tool to flash the iso or did not get the disable bitlocker
-        option in rufus then it is time to do it now. Follow this guide
-        if you are not sure how to do it.</p>
-        <p><a
-        href="https://www.howtogeek.com/805225/disable-bitlocker/">https://www.howtogeek.com/805225/disable-bitlocker/</a></p>
-        <p>Now you will have to shrink the current Windows partition to
-        make space for NixOS. If you are not sure how to do it the
-        follow this guide.</p>
-        <p><a
-        href="https://www.howtogeek.com/212/resize-a-partition-on-Windows/">https://www.howtogeek.com/212/resize-a-partition-on-Windows/</a></p>
-        <blockquote>
-        <p>The guide shows you different methods to shrink / expand
-        partitions, but you only need to shrink the partition.</p>
-        </blockquote>
-        <blockquote>
-        <p>You will need to shrink the partition for as much space you
-        need because resizing partitions after installing both OSs might
-        not be feasable.</p>
-        </blockquote>
-        <h2 id="nixos-installation">NixOS Installation</h2>
-        <h3 id="before-installation">Before Installation</h3>
-        <ul>
-        <li>Make sure that <strong>bitlocker is disabled</strong> on
-        Windows.</li>
-        <li>Make sure that you have shrank the Windows partition to make
-        space for NixOS</li>
-        </ul>
-        <blockquote>
-        <p>⚠️ <strong>DO NOT PROCEED WITHOUT THIS</strong></p>
-        </blockquote>
-        <p>Now you will need to <strong>disable secure boot</strong>
-        from the system’s BIOS. The process for this will be different
-        based on your system’s manufacturer so please look it up and do
-        the necessary.</p>
-        <p>You will have to flash the NixOS ISO to a usb drive and boot
-        into it. I used <a href="https://rufus.ie">Rufus</a> for this
-        also. Again booting from a usb drive will be different based on
-        your system’s manufacturer so please look it up and do the
-        necessary.</p>
-        <h3 id="installing-nixos">Installing NixOS</h3>
-        <p>During installation you will be asked to which partition
-        NixOS should be installed. Here select replace a partition. On
-        the partition figure given below that click on the unallocated
-        space (grey colour) that you made by shrinking the Windows
-        partition. Continue the installation and you will have NixOS
-        installed with systemd-boot as the bootloader.</p>
-        <blockquote>
-        <p>Be careful when doing this step, do not select the wrong
-        partition.</p>
-        </blockquote>
-        <h3 id="after-installing-nixos">After Installing NixOS</h3>
-        <p>You have to now go to the bios again and set the default boot
-        option as <em>Linux Boot Manager</em>. Now when you boot the
-        system you will be able to select which OS you want to boot
-        into.</p>
-        <p>But now we have a problem, - Secure boot is not enabled. If
-        it is enabled again then we cannot boot into NixOS using the
-        Linux Boot Manager option anymore.</p>
-        <p>To fix this we have to setup NixOS for secure boot. For this
-        we are going to use a project called <a
-        href="https://github.com/nix-community/lanzaboote">lanzaboote</a>.</p>
-        <h2 id="installing-lanzaboote">Installing Lanzaboote</h2>
-        <p>Do not follow the instructions for installing lanzaboote from
-        the NixOS wiki as this might be out of date and definitely
-        <strong>DO NOT select reset all secureboot keys</strong>
-        anywhere in the bios (you will get what I mean from the
-        lanzaboote docs).</p>
-        <p>You will have to follow the lanzaboote docs to install
-        lanzaboote onto your NixOS system. For this simply follow the
-        lanzaboote docs.</p>
-        <p><a
-        href="https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md">https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md</a></p>
-        <blockquote>
-        <p>There are two methods given in the lanzaboote docs to install
-        secureboot, one using nix flakes and another using niv. Use the
-        niv method if you are not using nix flakes to configure your
-        system.</p>
-        </blockquote>
-        <p>If you followed all the instructions properly you should have
-        a system that can dual boot NixOS and Windows and has secure
-        boot enabled.</p>
-        <h2 id="after-all-is-said-and-done">After All is Said and
-        Done</h2>
-        <p><a href="https://wiki.nixos.org">https://wiki.nixos.org</a>
-        provides some general tips for NixOS and Windows dual booters <a
-        href="https://wiki.nixos.org/wiki/Dual_Booting_NixOS_and_Windows">here</a>.
-        It also talks about things like how to make the bootloader
-        detect Windows (In our case Windows would be automatically
-        detected), how to use grub instead of systemd-boot as the
-        bootloader and about dual booting using different drive
-        configurations.</p>
-        <p>Refer to the <strong>System Time</strong> section from
-        https://wiki.nixos.org to make sure that time on Windows remains
-        in sync when dualbooting.</p>
-        <p><a
-        href="https://wiki.nixos.org/wiki/Dual_Booting_NixOS_and_Windows#System_time">https://wiki.nixos.org/wiki/Dual_Booting_NixOS_and_Windows#System_time</a></p>
-        <h2 id="general-tips">General Tips</h2>
-        <p>Here are some general tips for using your dual bootable
-        system</p>
-        <ul>
-        <li>To clear NixOS generations from the systemd-boot screen you
-        need to run the <code>nix-collect-garbage</code> command and
-        then also rebuild the system.</li>
-        <li>systemd-boot has some keyboard shortcuts to set an entry as
-        the default entry, set the time to auto select the default entry
-        etc. You can fing that <a
-        href="https://systemd.io/BOOT/">here</a></li>
-        <li>If you want to switch from Windows to NixOS while in Windows
-        instead of powering off and the starting the system select
-        reboot from Windows. In Windows powering off and then on again
-        is not the same as a reboot <a
-        href="https://www.howtogeek.com/349114/shutting-down-doesnt-fully-shut-down-windows-10-but-restarting-it-does/">Shutting
-        Down Doesn’t Fully Shut Down Windows 10</a>. Although there is
-        no actual proof that restarting is better to switch from Windows
-        to another OS I still recommend restarting to switch to a
-        different OS.</li>
-        </ul>
+            <nav>
+                <h1 class="sitename"><a href="https://blog.mathewma3.in">blog.mathewma3.in</a></h1>
+            </nav>
+            
+            <h1>Dual Booting NixOS and Windows (with SecureBoot)</h1>
+            
+            <p>
+                <i>Date:</i> <b>21st July 2024</b> <br>
+                <i>Author:</i> <b>MasterMach50</b>
+            </p>
+            
+            <blockquote>
+            <p>Please do not “follow” this guide. Read the entirety of
+            it and then make your own informed decisions.</p>
+            </blockquote>
+            <blockquote>
+            <p>I am not sponsored by anyone, I am writing this on my own
+            accord and the links here were chosen without any bias. I am
+            not liable for any damages.</p>
+            </blockquote>
+            <blockquote>
+            <p>for any corrections create an issue on the github repo of
+            this page</p>
+            </blockquote>
+            <h2 id="my-current-setup-aka-your-end-result">My Current
+            Setup (AKA your end result)</h2>
+            <p>I am currently running Windows 11 and NixOS 24.11 on the
+            same laptop on the same NVME drive. I am using
+            <code>systemd-boot</code> as my bootloader to easily switch
+            between my Windows and NixOS installations. <a
+            href="https://en.wikipedia.org/wiki/UEFI#Secure_Boot">Secure
+            Boot</a> was enabled using <a
+            href="https://github.com/nix-community/lanzaboote">lanzaboote</a>.</p>
+            <h2 id="preface-do-not-skip-this">Preface (Do Not Skip
+            This)</h2>
+            <p>You will need to wipe your disk so first of all
+            <strong>backup you data</strong>.</p>
+            <blockquote>
+            <p>ALWAYS BACKUP YOUR DATA</p>
+            </blockquote>
+            <p>For dual booting, the Windows install instructions is a
+            bit different so do read through it.</p>
+            <p>First you will be installing Windows and then NixOS.
+            Since NixOS does not support secureboot out of the box yet
+            you will have to make it work by installing <a
+            href="https://github.com/nix-community/lanzaboote">lanzaboote</a>.</p>
+            <h3 id="some-general-tips">Some General Tips</h3>
+            <ul>
+            <li><a href="https://nixos.wiki">https://nixos.wiki</a> may
+            or may not be up to date so do not blindly depend on
+            it.</li>
+            <li><a
+            href="https://wiki.nixos.org">https://wiki.nixos.org</a> is
+            almost always up to date.</li>
+            <li>Having full disk encryption (bitlocker on Windows) is
+            good, but if things go wrong it will be harder to recover
+            your data. It’s still possibe to recover your data but a bit
+            harder. Still, use bitlocker if you have to.</li>
+            </ul>
+            <h2 id="windows-installation">Windows Installation</h2>
+            <h3 id="preparing-the-iso">Preparing the ISO</h3>
+            <p>A regular Windows ISO will do.</p>
+            <p>To flash the ISO to a USB drive I used <a
+            href="https://rufus.ie">Rufus</a> form another Windows
+            machine. If you are using rufus then before flashing the iso
+            to a usb drive rufus will give you the option to disable
+            bitlocker encryption, i recommend enabling this. If you did
+            not get this option then continue as bitlocker can be
+            disabled after installing Windows. (Refer <strong>After
+            Installing Windows</strong> section)</p>
+            <blockquote>
+            <p>You can enable bitlocker from Windows after installing
+            both Windows and NixOS and installing lanzaboote.</p>
+            </blockquote>
+            <blockquote>
+            <p><strong>Disabling bitlocker is important</strong> for the
+            install process beacuse bitlocker depends on secureboot and
+            we need to disable secureboot for installing NixOS. If
+            secure boot is disabled and you have enabled bitlocker you
+            won’t be able to simply boot into Windows, you will have to
+            get your bitlocker decryption key.</p>
+            </blockquote>
+            <h3 id="installing-windows">Installing Windows</h3>
+            <p>During Windows installation select
+            <code>Custom: Install Windows Only (advanced)</code>. You
+            will be asked select which drive to install to and to setup
+            the partitions. You will need to setup a large EFI partition
+            (500MB to 1GB) for dualbooting as the default EFI partition
+            size on Windows is just 100MB which is too small for sual
+            booting. You can do this by following this guide.</p>
+            <p><a
+            href="https://www.ctrl.blog/entry/how-to-esp-windows-setup.html">https://www.ctrl.blog/entry/how-to-esp-windows-setup.html</a></p>
+            <blockquote>
+            <p>If you are ever planning to dual boot anything with
+            Windows please consider creating a larger EFI partition than
+            what Windows defaults to during Windows install.</p>
+            </blockquote>
+            <blockquote>
+            <p>I have gone with a 1GB EFI partition on my system</p>
+            </blockquote>
+            <h3 id="after-installing-windows">After Installing
+            Windows</h3>
+            <p>If you have not disabled bitlocker from rufus or used
+            another tool to flash the iso or did not get the disable
+            bitlocker option in rufus then it is time to do it now.
+            Follow this guide if you are not sure how to do it.</p>
+            <p><a
+            href="https://www.howtogeek.com/805225/disable-bitlocker/">https://www.howtogeek.com/805225/disable-bitlocker/</a></p>
+            <p>Now you will have to shrink the current Windows partition
+            to make space for NixOS. If you are not sure how to do it
+            the follow this guide.</p>
+            <p><a
+            href="https://www.howtogeek.com/212/resize-a-partition-on-Windows/">https://www.howtogeek.com/212/resize-a-partition-on-Windows/</a></p>
+            <blockquote>
+            <p>The guide shows you different methods to shrink / expand
+            partitions, but you only need to shrink the partition.</p>
+            </blockquote>
+            <blockquote>
+            <p>You will need to shrink the partition for as much space
+            you need because resizing partitions after installing both
+            OSs might not be feasable.</p>
+            </blockquote>
+            <h2 id="nixos-installation">NixOS Installation</h2>
+            <h3 id="before-installation">Before Installation</h3>
+            <ul>
+            <li>Make sure that <strong>bitlocker is disabled</strong> on
+            Windows.</li>
+            <li>Make sure that you have shrank the Windows partition to
+            make space for NixOS</li>
+            </ul>
+            <blockquote>
+            <p>⚠️ <strong>DO NOT PROCEED WITHOUT THIS</strong></p>
+            </blockquote>
+            <p>Now you will need to <strong>disable secure boot</strong>
+            from the system’s BIOS. The process for this will be
+            different based on your system’s manufacturer so please look
+            it up and do the necessary.</p>
+            <p>You will have to flash the NixOS ISO to a usb drive and
+            boot into it. I used <a href="https://rufus.ie">Rufus</a>
+            for this also. Again booting from a usb drive will be
+            different based on your system’s manufacturer so please look
+            it up and do the necessary.</p>
+            <h3 id="installing-nixos">Installing NixOS</h3>
+            <p>During installation you will be asked to which partition
+            NixOS should be installed. Here select replace a partition.
+            On the partition figure given below that click on the
+            unallocated space (grey colour) that you made by shrinking
+            the Windows partition. Continue the installation and you
+            will have NixOS installed with systemd-boot as the
+            bootloader.</p>
+            <blockquote>
+            <p>Be careful when doing this step, do not select the wrong
+            partition.</p>
+            </blockquote>
+            <h3 id="after-installing-nixos">After Installing NixOS</h3>
+            <p>You have to now go to the bios again and set the default
+            boot option as <em>Linux Boot Manager</em>. Now when you
+            boot the system you will be able to select which OS you want
+            to boot into.</p>
+            <p>But now we have a problem, - Secure boot is not enabled.
+            If it is enabled again then we cannot boot into NixOS using
+            the Linux Boot Manager option anymore.</p>
+            <p>To fix this we have to setup NixOS for secure boot. For
+            this we are going to use a project called <a
+            href="https://github.com/nix-community/lanzaboote">lanzaboote</a>.</p>
+            <h2 id="installing-lanzaboote">Installing Lanzaboote</h2>
+            <p>Do not follow the instructions for installing lanzaboote
+            from the NixOS wiki as this might be out of date and
+            definitely <strong>DO NOT select reset all secureboot
+            keys</strong> anywhere in the bios (you will get what I mean
+            from the lanzaboote docs).</p>
+            <p>You will have to follow the lanzaboote docs to install
+            lanzaboote onto your NixOS system. For this simply follow
+            the lanzaboote docs.</p>
+            <p><a
+            href="https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md">https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md</a></p>
+            <blockquote>
+            <p>There are two methods given in the lanzaboote docs to
+            install secureboot, one using nix flakes and another using
+            niv. Use the niv method if you are not using nix flakes to
+            configure your system.</p>
+            </blockquote>
+            <p>If you followed all the instructions properly you should
+            have a system that can dual boot NixOS and Windows and has
+            secure boot enabled.</p>
+            <h2 id="after-all-is-said-and-done">After All is Said and
+            Done</h2>
+            <p><a
+            href="https://wiki.nixos.org">https://wiki.nixos.org</a>
+            provides some general tips for NixOS and Windows dual
+            booters <a
+            href="https://wiki.nixos.org/wiki/Dual_Booting_NixOS_and_Windows">here</a>.
+            It also talks about things like how to make the bootloader
+            detect Windows (In our case Windows would be automatically
+            detected), how to use grub instead of systemd-boot as the
+            bootloader and about dual booting using different drive
+            configurations.</p>
+            <p>Refer to the <strong>System Time</strong> section from <a
+            href="https://wiki.nixos.org">https://wiki.nixos.org</a> to
+            make sure that time on Windows remains in sync when
+            dualbooting.</p>
+            <p><a
+            href="https://wiki.nixos.org/wiki/Dual_Booting_NixOS_and_Windows#System_time">https://wiki.nixos.org/wiki/Dual_Booting_NixOS_and_Windows#System_time</a></p>
+            <h2 id="general-tips">General Tips</h2>
+            <p>Here are some general tips for using your dual bootable
+            system</p>
+            <ul>
+            <li>To clear NixOS generations from the systemd-boot screen
+            you need to run the <code>nix-collect-garbage</code> command
+            and then also rebuild the system.</li>
+            <li>systemd-boot has some keyboard shortcuts to set an entry
+            as the default entry, set the time to auto select the
+            default entry etc. You can find that <a
+            href="https://systemd.io/BOOT/">here</a>.</li>
+            <li>If you want to switch from Windows to NixOS while in
+            Windows instead of powering off and the starting the system
+            select reboot from Windows. In Windows powering off and then
+            on again is not the same as a reboot <a
+            href="https://www.howtogeek.com/349114/shutting-down-doesnt-fully-shut-down-windows-10-but-restarting-it-does/">Shutting
+            Down Doesn’t Fully Shut Down Windows 10</a>. Although there
+            is no actual proof that restarting is better to switch from
+            Windows to another OS I still recommend restarting to switch
+            to a different OS.</li>
+            </ul>
+            
+        </div>
+        <footer>
+        Hosted with ❤️ on Github
+        </footer>
     </body>
 </html>

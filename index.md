@@ -1,5 +1,9 @@
-# Welcome to the Blog of MasterMach50
+---
+title: Welcome to the Blog of MasterMach50
+keywords: CS, blog, Computers, Programming
+description: A CS student's personal blog
+---
 
 Check out some of my articles
 
-- [Dual Booting NixOS and Windows 11 (with SecureBoot)](https://blog.mathewma3.in/articles/dualbooting-nixos-and-windows-with-secureboot)
+- [Dual Booting NixOS and Windows (with SecureBoot)](./articles/dualbooting-nixos-and-windows-with-secureboot.html)
