@@ -12,12 +12,13 @@ html {
 }
 
 body {
-    margin: 0;
+    margin: 0rem;
 }
 
 .main-content {
     max-width: 50rem;
     margin: auto;
+    padding: 0 1rem;
     min-height: 100vh;
 }
 
@@ -32,7 +33,7 @@ body {
 
 footer {
     background-color: black;
-    padding: 0 2rem;
+    padding: 0 0 0 2rem;
     height: 3rem;
     line-height: 3rem;
 }
