@@ -26,7 +26,7 @@ body {
     font-weight: 700;
 }
 
-body > h1 {
+.pagetitle {
     font-size: 3rem;
 }
 
