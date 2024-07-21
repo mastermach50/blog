@@ -10,7 +10,7 @@ description: A guide on how to dual boot NixOS and Windows with secure boot
 
 > I am not sponsored by anyone, I am writing this on my own accord and the links here were chosen without any bias. I am not liable for any damages.
 
-> for any corrections create an issue on the github repo of this page
+> For any corrections create an issue on the github repo of this page
 
 ## My Current Setup (AKA your end result)
 I am currently running Windows 11 and NixOS 24.11 on the same laptop on the same NVME drive. I am using `systemd-boot` as my bootloader to easily switch between my Windows and NixOS installations. [Secure Boot](https://en.wikipedia.org/wiki/UEFI#Secure_Boot) was enabled using [lanzaboote](https://github.com/nix-community/lanzaboote).
