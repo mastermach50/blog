@@ -5,8 +5,10 @@
         <link rel="stylesheet" href="/template.css">
         <link rel="shortcut icon" href="/res/favicon.png" type="image/x-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <meta property="og:title" content="$title$">
         <meta property="og:type" content="article">
+        <meta property="og:url" content="/article/{{{filename_without_ext}}}.html">
         <meta property="og:image" content="/articles/images/{{{filename_without_ext}}}/og_image.png">
         <meta property="og:image:type" content="image/png">
         <meta property="og:image:type" content="image/png">
@@ -19,6 +21,7 @@
         <meta property="article:author" content="$author$">
         $for(keywords)$<meta property="og:tag" content="$keywords$">
         $endfor$
+
     </head>
     <body>
 

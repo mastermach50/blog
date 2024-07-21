@@ -59,7 +59,7 @@ If you have not disabled bitlocker from rufus or used another tool to flash the 
 
 Now you will have to shrink the current Windows partition to make space for NixOS. If you are not sure how to do it the follow this guide.
 
-[https://www.howtogeek.com/212/resize-a-partition-on-Windows/](https://www.howtogeek.com/212/resize-a-partition-on-Windows/)
+[https://www.howtogeek.com/212/resize-a-partition-on-windows/](https://www.howtogeek.com/212/resize-a-partition-on-windows/)
 
 > The guide shows you different methods to shrink / expand partitions, but you only need to shrink the partition.
 
