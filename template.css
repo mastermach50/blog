@@ -47,18 +47,32 @@ h1,h2,h3,h4,h5,h6 {
     color: white;
 }
 
+.taglist {
+    display: flex;
+}
+
+.tag {
+    background-color: rgb(241, 241, 241);
+    color: black;
+    padding: 0.5rem;
+    border-radius: 2rem;
+    margin-right: 1rem;
+}
+
 a {
+    display: inline-block;
     text-decoration: none;
     color: var(--link-blue);
-    display: inline-block;
+    background-image: linear-gradient(var(--link-blue), var(--link-blue));
+    background-size: 0%;
+    background-repeat: no-repeat;
+    transition: background-size 0.2s;
 }
 
 a:hover {
-    transform: 0.5s;
-    font-weight: 500;
-    color:white;
-    background-color: var(--link-blue);
-    transition: ease-in-out;
+    background-size: 100%;
+    color: white;
+    cursor: none;
 }
 
 strong {

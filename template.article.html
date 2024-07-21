@@ -22,7 +22,13 @@
             <p>
                 <i>Date:</i> <b>$date$</b> <br>
                 <i>Author:</i> <b>$author$</b>
+                <div class="taglist">
+                $for(keywords)$ 
+                    <div class="tag">$keywords$</div>
+                $endfor$
+                </div>
             </p>
+            <hr>
             
             $body$
             

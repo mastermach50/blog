@@ -2,7 +2,7 @@
 title: Dual Booting NixOS and Windows (with SecureBoot)
 author: MasterMach50
 date: 21st July 2024
-keywords: Windows, NixOS, dual boot, secure boot
+keywords: [ Windows, NixOS, dual boot, secure boot ]
 description: A guide on how to dual boot NixOS and Windows with secure boot
 ---
 
