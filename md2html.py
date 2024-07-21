@@ -20,8 +20,6 @@ for file in md_files:
     print(f"Processed {filename_without_ext}")
 
 # Convert index from markdown to html
-filename_without_ext = "index"
 os.system(f"pandoc -f markdown -t html --columns 100 --template template.index.html ./index.md -o ./index.html")
-variable_replacement(f"./index.html")
 
 print("Processed Index")
