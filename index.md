@@ -1,6 +1,6 @@
 ---
 title: MasterMach50's Blog
-keywords: CS, blog, Computers, Programming
+keywords: CS, Blog, Computers, Programming
 description: A CS student's personal blog
 ---
 
