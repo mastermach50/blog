@@ -9,11 +9,11 @@ for file in md_files:
     title = filename_without_ext.replace("-", " ").title()
 
 
-    os.system(f"pandoc -f markdown -t html --template template.article.html ./articles/raw/{file} -o ./articles/{filename_without_ext}.html")
+    os.system(f"pandoc -f markdown -t html --columns 100 --template template.article.html ./articles/raw/{file} -o ./articles/{filename_without_ext}.html")
 
     print(f"Processed {filename_without_ext}")
 
 
 # Convert index from markdown to html
-os.system(f"pandoc -f markdown -t html --standalone --template template.index.html ./index.md -o ./index.html")
+os.system(f"pandoc -f markdown -t html --columns 100 --template template.index.html ./index.md -o ./index.html")
 print("Processed Index")

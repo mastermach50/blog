@@ -41,6 +41,7 @@ footer {
 blockquote {
 	border-left: solid 0.3rem white;
 	padding-left: 1rem;
+    margin-left: 1rem;
 }
 
 h1,h2,h3,h4,h5,h6 {

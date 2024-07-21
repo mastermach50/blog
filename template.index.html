@@ -3,11 +3,13 @@
     <head>
         <title>$title$</title>
         <link rel="stylesheet" href="./template.css">
-        <meta name="date" content='$date-meta$'>
-        <meta name="description" content="$description$">
-        <meta name="author" content="$author$">
-        <meta name="keywords" content="$keywords$">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="$title$">
+        <meta property="og:description" content="$description$">
+        <meta property="og:site_name" content="blog.mathewma3.in">
+        <meta property="og:locale" content="en_GB" />
+        $for(keywords)$<meta property="og:tag" content="$keywords$">
+        $endfor$
     </head>
     <body>
 
@@ -19,7 +21,7 @@
             
             <h1 class="pagetitle">$title$</h1>
             <hr>
-            
+
             $body$
             
         </div>
